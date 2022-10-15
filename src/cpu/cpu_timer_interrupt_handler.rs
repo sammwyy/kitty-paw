@@ -1,12 +1,9 @@
 use x86_64::structures::idt::InterruptStackFrame;
 
-use crate::{
-    cpu::cpu_interrupt_index::{InterruptIndex, PICS},
-    print,
-};
+use crate::cpu::cpu_interrupt_index::{InterruptIndex, PICS};
 
 pub extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFrame) {
-    print!(".");
+    // print!(".");
 
     unsafe {
         PICS.lock()
