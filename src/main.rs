@@ -1,6 +1,8 @@
 #![no_std] // Don't link rust std library.
 #![no_main] // Disable rust-level entry points.
+#![feature(abi_x86_interrupt)] // Use x86-interrupt calling convention.
 
+mod cpu;
 mod vga;
 
 use core::panic::PanicInfo;
@@ -12,7 +14,12 @@ use crate::vga::vga_color::Color;
 
 #[no_mangle] // Don't mangle the name of this fn.
 pub extern "C" fn _start() -> ! {
+    cpu::cpu_interrupts::init_idt();
+
     println!("Hello World{}", "!");
+
+    // Make it crash.
+    x86_64::instructions::interrupts::int3();
     panic!("Intentional crash");
 
     // Block with a infinite loop.
