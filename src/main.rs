@@ -5,6 +5,8 @@ mod vga;
 
 use core::panic::PanicInfo;
 
+use crate::vga::vga_color::Color;
+
 // Entrypoint since the linker looks for a function
 // named '_start' by default.
 
@@ -20,6 +22,9 @@ pub extern "C" fn _start() -> ! {
 // Function called on panic.
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    println!("Kernal Panic: {}", info);
+    set_color!(Color::Red, Color::Black);
+    print!("Kernal Panic: ");
+    set_color!(Color::LightRed, Color::Black);
+    print!("{}", info);
     loop {}
 }

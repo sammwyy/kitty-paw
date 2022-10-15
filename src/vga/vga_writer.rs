@@ -1,5 +1,6 @@
 use super::{
     vga_buffer::{Buffer, BUFFER_HEIGHT, BUFFER_WIDTH},
+    vga_color::Color,
     vga_color_mode::ColorMode,
     vga_screen_char::ScreenChar,
 };
@@ -15,6 +16,12 @@ impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         self.write_string(s);
         Ok(())
+    }
+}
+
+impl Writer {
+    pub fn set_color(&mut self, fg: Color, bg: Color) {
+        self.color_code = ColorMode::new(fg, bg);
     }
 }
 
