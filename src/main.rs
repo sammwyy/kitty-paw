@@ -14,9 +14,15 @@ use crate::vga::vga_color::Color;
 
 #[no_mangle] // Don't mangle the name of this fn.
 pub extern "C" fn _start() -> ! {
+    cpu::cpu_gdt::init();
     cpu::cpu_interrupts::init_idt();
 
     println!("Hello World{}", "!");
+
+    // Trigger exception.
+    unsafe {
+        *(0xdeadbeef as *mut u64) = 42;
+    };
 
     // Make it crash.
     x86_64::instructions::interrupts::int3();
