@@ -1,7 +1,7 @@
 #![no_std] // Don't link rust std library.
 #![no_main] // Disable rust-level entry points.
 
-mod vga_buffer;
+mod vga;
 
 use core::panic::PanicInfo;
 
