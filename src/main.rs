@@ -10,6 +10,13 @@ use cpu::cpu_interrupt_index::PICS;
 use crate::vga::vga_color::Color;
 use core::panic::PanicInfo;
 
+// CPU Halting
+pub fn hlt_loop() -> ! {
+    loop {
+        x86_64::instructions::hlt();
+    }
+}
+
 // Initialize kernel
 pub fn init() {
     cpu::cpu_gdt::init();
@@ -42,7 +49,7 @@ pub extern "C" fn _start() -> ! {
     */
 
     // Block with a infinite loop.
-    loop {}
+    hlt_loop();
 }
 
 // Function called on panic.
@@ -52,5 +59,7 @@ fn panic(info: &PanicInfo) -> ! {
     print!("Kernal Panic: ");
     set_color!(Color::LightRed, Color::Black);
     print!("{}", info);
-    loop {}
+
+    // Block with a infinite loop.
+    hlt_loop();
 }

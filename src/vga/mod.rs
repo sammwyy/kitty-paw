@@ -43,10 +43,18 @@ macro_rules! set_color {
 #[doc(hidden)]
 pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
-    WRITER.lock().write_fmt(args).unwrap();
+    use x86_64::instructions::interrupts;
+
+    interrupts::without_interrupts(|| {
+        WRITER.lock().write_fmt(args).unwrap();
+    });
 }
 
 #[doc(hidden)]
 pub fn _set_color(fg: Color, bg: Color) {
-    WRITER.lock().set_color(fg, bg);
+    use x86_64::instructions::interrupts;
+
+    interrupts::without_interrupts(|| {
+        WRITER.lock().set_color(fg, bg);
+    });
 }
