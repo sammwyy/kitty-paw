@@ -2,6 +2,7 @@ use crate::cpu::{
     cpu_breakpoint_handler, cpu_double_fault_handler::double_fault_handler,
     cpu_gdt::DOUBLE_FAULT_IST_INDEX, cpu_interrupt_index::InterruptIndex,
     cpu_keyboard_interrupt_handler::keyboard_interrupt_handler,
+    cpu_page_fault_handler::page_fault_handler,
     cpu_timer_interrupt_handler::timer_interrupt_handler,
 };
 use lazy_static::lazy_static;
@@ -19,6 +20,7 @@ lazy_static! {
         }
         idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
         idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyboard_interrupt_handler);
+        idt.page_fault.set_handler_fn(page_fault_handler);
         idt
     };
 }
